@@ -27,13 +27,15 @@ RUN \
  else \
 	SABNZBD="sabnzbdplus=${SABNZBD_VERSION}"; \
  fi && \
+ apt-get update && \
+ apt-get install -y \
+ 	software-properties-common && \
  add-apt-repository multiverse && \
  apt-get update && \
  apt-get install -y \
  	openvpn \
 	curl \
 	wget \
- 	software-properties-common \
 	p7zip-full \
 	par2-tbb \
 	python-sabyenc \
