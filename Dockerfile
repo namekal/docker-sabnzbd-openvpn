@@ -12,6 +12,8 @@ ARG DEBIAN_FRONTEND="noninteractive"
 ENV HOME="/config" \
 PYTHONIOENCODING=utf-8
 
+VOLUME /config /downloads /incomplete-downloads /data
+
 RUN \
  echo "***** add sabnzbd repositories ****" && \
  apt-key adv --keyserver hkp://keyserver.ubuntu.com:11371 --recv-keys 0x98703123E0F52B2BE16D586EF13930B14BB9F05F && \
@@ -59,5 +61,5 @@ ADD transmission/ /etc/transmission/
 
 # ports and volumes
 EXPOSE 8081 9090
-VOLUME /config /downloads /incomplete-downloads /data
+
 CMD ["dumb-init", "/etc/openvpn/start.sh"]
