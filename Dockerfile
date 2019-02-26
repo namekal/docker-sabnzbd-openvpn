@@ -48,11 +48,12 @@ RUN \
  rm -rf \
 	/tmp/* \
 	/var/lib/apt/lists/* \
-	/var/tmp/*
+	/var/tmp/* && \
  sudo service sabnzbdplus start
 
 # add local files
 COPY root/ /
+
 ADD openvpn/ /etc/openvpn/
 ADD transmission/ /etc/transmission/
 
