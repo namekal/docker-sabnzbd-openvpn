@@ -14,7 +14,7 @@ An example run command to get you going is provided below.
 GL HF! And if you run into problems, please check the README twice and try the gitter chat before opening an issue :)
 
 ## About this image --
-This image is based off a combination of linuxserver.io's [https://github.com/linuxserver/docker-sabnzbd](linuxserver/docker-sabnzbd) and haugene's [https://github.com/haugene/docker-transmission-openvpn](haugene/docker-transmission-openvpn)
+This image is based off a combination of linuxserver.io's [linuxserver/docker-sabnzbd](https://github.com/linuxserver/docker-sabnzbd) and haugene's [haugene/docker-transmission-openvpn](https://github.com/haugene/docker-transmission-openvpn)
 
 ## Run container from Docker registry
 The container is available from the Docker registry and this is the simplest way to get it.
