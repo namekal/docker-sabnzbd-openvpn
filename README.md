@@ -1,9 +1,7 @@
-# OpenVPN and Transmission with WebUI
+# OpenVPN and Sabnzbd
 
-[![Docker Automated build](https://img.shields.io/docker/automated/haugene/transmission-openvpn.svg)](https://hub.docker.com/r/haugene/transmission-openvpn/)
-[![Docker Pulls](https://img.shields.io/docker/pulls/haugene/transmission-openvpn.svg)](https://hub.docker.com/r/haugene/transmission-openvpn/)
-[![Join the chat at https://gitter.im/docker-transmission-openvpn/Lobby](https://badges.gitter.im/docker-transmission-openvpn/Lobby.svg)](https://gitter.im/docker-transmission-openvpn/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
+[![Docker Automated build](https://img.shields.io/docker/automated/namekal/docker-sabznbd-openvpn.svg)](https://hub.docker.com/r/namekal/docker-sabznbd-openvpn/)
+[![Docker Pulls](https://img.shields.io/docker/pulls/namekal/docker-sabznbd-openvpn.svg)](https://hub.docker.com/r/namekal/docker-sabznbd-openvpn/)
 
 This container contains OpenVPN and Sabnzbd with a configuration
 where Sabnzbd is running only when OpenVPN has an active tunnel.
@@ -12,9 +10,6 @@ It bundles configuration files for many popular VPN providers to make the setup 
 You need to specify your provider and credentials with environment variables,
 as well as mounting volumes where the data should be stored.
 An example run command to get you going is provided below.
-
-`#It also bundles an installation of Tinyproxy to also be able to proxy web traffic over your VPN
-as well as scripts for opening a port for Transmission if you are using PIA or Perfect Privacy providers.`
 
 GL HF! And if you run into problems, please check the README twice and try the gitter chat before opening an issue :)
 
