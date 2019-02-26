@@ -49,7 +49,7 @@ RUN \
 	/tmp/* \
 	/var/lib/apt/lists/* \
 	/var/tmp/* && \
- sudo service sabnzbdplus start
+ service sabnzbdplus start
 
 # add local files
 COPY root/ /
