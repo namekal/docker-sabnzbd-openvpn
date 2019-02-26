@@ -59,7 +59,6 @@ RUN \
 COPY root/ /
 
 ADD openvpn/ /etc/openvpn/
-ADD transmission/ /etc/transmission/
 
 # ports and volumes
 EXPOSE 8081 9090
