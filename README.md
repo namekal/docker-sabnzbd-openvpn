@@ -1,7 +1,7 @@
 # OpenVPN and Sabnzbd
 
-[![Docker Automated build](https://img.shields.io/docker/automated/namekal/docker-sabznbd-openvpn.svg)](https://hub.docker.com/r/namekal/docker-sabznbd-openvpn/)
-[![Docker Pulls](https://img.shields.io/docker/pulls/namekal/docker-sabznbd-openvpn.svg)](https://hub.docker.com/r/namekal/docker-sabznbd-openvpn/)
+[![Docker Automated build](https://img.shields.io/docker/automated/namekal/docker-sabnzbd-openvpn.svg)](https://hub.docker.com/r/namekal/docker-sabnzbd-openvpn/)
+[![Docker Pulls](https://img.shields.io/docker/pulls/namekal/docker-sabnzbd-openvpn.svg)](https://hub.docker.com/r/namekal/docker-sabnzbd-openvpn/)
 
 This container contains OpenVPN and Sabnzbd with a configuration
 where Sabnzbd is running only when OpenVPN has an active tunnel.
