@@ -106,7 +106,7 @@ ENV \
 
 
 
-VOLUME /config /downloads /incomplete-downloads /data
+VOLUME /config /downloads
 
 RUN \
  apt-get update && \
