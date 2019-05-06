@@ -84,8 +84,6 @@ ENV \
 	TRANSMISSION_WATCH_DIR=/downloads/watch \
 	TRANSMISSION_WATCH_DIR_ENABLED=true \
 	TRANSMISSION_HOME=/config/transmission-home \
-    PUID=\
-    PGID=\
 	HEALTH_CHECK_HOST=google.com
 
 VOLUME /config /downloads /incomplete-downloads /data
