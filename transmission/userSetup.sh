@@ -17,7 +17,7 @@ if [ -n "$PUID" ] && [ ! "$(id -u root)" -eq "$PUID" ]; then
         ${TRANSMISSION_WATCH_DIR}
 
     echo "Enforcing ownership on transmission config directories"
-    chown -R ${RUN_AS}:${RUN_AS} \
+    chown -R ${RUN_AS}:${PGID} \
         /config \
         ${TRANSMISSION_HOME}
 
@@ -28,7 +28,7 @@ if [ -n "$PUID" ] && [ ! "$(id -u root)" -eq "$PUID" ]; then
 
     if [ "$GLOBAL_APPLY_PERMISSIONS" = true ] ; then
 	echo "Setting owner for transmission paths to ${PUID}:${PGID}"
-        chown -R ${RUN_AS}:${RUN_AS} \
+        chown -R ${RUN_AS}:${PGID} \
             ${TRANSMISSION_DOWNLOAD_DIR} \
             ${TRANSMISSION_INCOMPLETE_DIR} \
             ${TRANSMISSION_WATCH_DIR}
