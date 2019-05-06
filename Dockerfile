@@ -91,6 +91,9 @@ ENV \
 VOLUME /config /downloads /incomplete-downloads /data
 
 RUN \
+ apt-get update && \
+ apt-get install -y \
+ 	software-properties-common && \
  add-apt-repository ppa:transmissionbt/ppa && \
  apt-get install -y transmission-cli transmission-common transmission-daemon
  
@@ -107,9 +110,6 @@ RUN \
  else \
 	SABNZBD="sabnzbdplus=${SABNZBD_VERSION}"; \
  fi && \
- apt-get update && \
- apt-get install -y \
- 	software-properties-common && \
  add-apt-repository multiverse && \
  apt-get update && \
  apt-get install -y \
