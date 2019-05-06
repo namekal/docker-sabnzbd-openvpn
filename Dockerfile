@@ -141,6 +141,7 @@ COPY root/ /
 
 ADD openvpn/ /etc/openvpn/
 ADD transmission/ /etc/transmission/
+ADD scripts /etc/scripts/
 
 HEALTHCHECK --interval=5m CMD /etc/scripts/healthcheck.sh
 
