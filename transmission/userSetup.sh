@@ -9,13 +9,36 @@ if [ -n "$PUID" ] && [ ! "$(id -u root)" -eq "$PUID" ]; then
     if [ ! "$(id -u ${RUN_AS})" -eq "$PUID" ]; then usermod -o -u "$PUID" ${RUN_AS} ; fi
     if [ ! "$(id -g ${RUN_AS})" -eq "$PGID" ]; then groupmod -o -g "$PGID" ${RUN_AS} ; fi
 
-    echo "Setting owner for transmission paths to ${PUID}:${PGID}"
-    chown -R ${RUN_AS}:${RUN_AS} ${TRANSMISSION_HOME}
-    chown ${RUN_AS}:${RUN_AS} \
-        /config \
+    # Make sure directories exist before chown and chmod
+    mkdir -p /config \
+        ${TRANSMISSION_HOME} \
         ${TRANSMISSION_DOWNLOAD_DIR} \
         ${TRANSMISSION_INCOMPLETE_DIR} \
         ${TRANSMISSION_WATCH_DIR}
+
+    echo "Enforcing ownership on transmission config directories"
+    chown -R ${RUN_AS}:${RUN_AS} \
+        /config \
+        ${TRANSMISSION_HOME}
+
+    echo "Applying permissions to transmission config directories"
+    chmod -R go=rX,u=rwX \
+        /config \
+        ${TRANSMISSION_HOME}
+
+    if [ "$GLOBAL_APPLY_PERMISSIONS" = true ] ; then
+	echo "Setting owner for transmission paths to ${PUID}:${PGID}"
+        chown -R ${RUN_AS}:${RUN_AS} \
+            ${TRANSMISSION_DOWNLOAD_DIR} \
+            ${TRANSMISSION_INCOMPLETE_DIR} \
+            ${TRANSMISSION_WATCH_DIR}
+
+	echo "Setting permission for files (644) and directories (755)"
+        chmod -R go=rX,u=rwX \
+            ${TRANSMISSION_DOWNLOAD_DIR} \
+            ${TRANSMISSION_INCOMPLETE_DIR} \
+            ${TRANSMISSION_WATCH_DIR}
+    fi
 fi
 
 echo "
