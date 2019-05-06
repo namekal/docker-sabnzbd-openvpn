@@ -157,6 +157,9 @@ RUN \
 # add local files
 COPY root/ /
 
+RUN \
+ apt-get install -y iputils-ping
+
 ADD openvpn/ /etc/openvpn/
 ADD transmission/ /etc/transmission/
 ADD scripts /etc/scripts/
