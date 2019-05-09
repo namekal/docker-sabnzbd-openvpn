@@ -47,7 +47,7 @@ Transmission will run as
 -------------------------------------
 User name:   ${RUN_AS}
 User uid:    $(id -u ${RUN_AS})
-User gid:    $(id -g ${RUN_AS})
+User gid:    $(id -g ${PGID})
 -------------------------------------
 "
 
