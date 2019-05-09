@@ -22,6 +22,7 @@ RUN \
     unzip \
     zip \
     jq \
+    git \
     software-properties-common && \
  add-apt-repository ppa:transmissionbt/ppa && \
  wget -O - https://swupdate.openvpn.net/repos/repo-public.gpg | apt-key add - && \
