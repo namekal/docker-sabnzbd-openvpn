@@ -73,7 +73,7 @@ RUN \
  dpkg -i dumb-init*.deb && \
  rm -rf dumb-init*.deb && \
  curl -L https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-linux-amd64-v0.6.1.tar.gz | tar -C /usr/local/bin -xzv && \
- echo -e "USER=root\nHOST=0.0.0.0\nPORT=8081\nCONFIG=/config/sabnzbd-home\nX_FRAME_OPTIONS=0\n" > /etc/default/sabnzbdplus && \
+ printf "USER=root\nHOST=0.0.0.0\nPORT=8081\nCONFIG=/config/sabnzbd-home\nX_FRAME_OPTIONS=0\n" > /etc/default/sabnzbdplus && \
  echo "**** cleanup ****" && \
  apt-get clean && \
  rm -rf \
