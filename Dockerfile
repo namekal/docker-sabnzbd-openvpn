@@ -15,6 +15,11 @@ VOLUME /config /downloads
 RUN \
  apt-get update && apt-get upgrade -y && \
  apt-get install -y \
+<<<<<<< HEAD
+=======
+    wget \
+    curl \
+>>>>>>> -Update transmission install run block
  	software-properties-common && \
  add-apt-repository ppa:transmissionbt/ppa && \
  wget -O - https://swupdate.openvpn.net/repos/repo-public.gpg | apt-key add - && \
@@ -51,8 +56,11 @@ RUN \
  apt-get install -y \
  	openvpn \
     sudo \
+<<<<<<< HEAD
 	curl \
 	wget \
+=======
+>>>>>>> -Update transmission install run block
 	p7zip-full \
 	par2-tbb \
 	python-sabyenc \
