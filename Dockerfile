@@ -9,14 +9,84 @@ LABEL maintainer="namekal"
 
 # environment settings
 ARG DEBIAN_FRONTEND="noninteractive"
+
+VOLUME /config /downloads
+
+RUN \
+ apt-get update && apt-get upgrade -y && \
+ apt-get install -y \
+ 	software-properties-common && \
+ add-apt-repository ppa:transmissionbt/ppa && \
+ wget -O - https://swupdate.openvpn.net/repos/repo-public.gpg | apt-key add - && \
+ echo "deb http://build.openvpn.net/debian/openvpn/stable bionic main" > /etc/apt/sources.list.d/openvpn-aptrepo.list && \
+ apt update && \
+ apt-get install -y transmission-cli transmission-common transmission-daemon bc \
+ python2.7 python2.7-pysqlite2 && ln -sf /usr/bin/python2.7 /usr/bin/python2 \
+ && wget https://github.com/Secretmapper/combustion/archive/release.zip \
+    && unzip release.zip -d /opt/transmission-ui/ \
+    && rm release.zip \
+    && mkdir /opt/transmission-ui/transmission-web-control \
+    && curl -sL `curl -s https://api.github.com/repos/ronggang/transmission-web-control/releases/latest | jq --raw-output '.tarball_url'` | tar -C /opt/transmission-ui/transmission-web-control/ --strip-components=2 -xz \
+    && ln -s /usr/share/transmission/web/style /opt/transmission-ui/transmission-web-control \
+    && ln -s /usr/share/transmission/web/images /opt/transmission-ui/transmission-web-control \
+    && ln -s /usr/share/transmission/web/javascript /opt/transmission-ui/transmission-web-control \
+    && ln -s /usr/share/transmission/web/index.html /opt/transmission-ui/transmission-web-control/index.original.html \
+    && git clone git://github.com/endor/kettu.git /opt/transmission-ui/kettu
+
+RUN \
+ echo "***** add sabnzbd repositories ****" && \
+ apt-key adv --keyserver hkp://keyserver.ubuntu.com:11371 --recv-keys 0x98703123E0F52B2BE16D586EF13930B14BB9F05F && \
+ echo "deb http://ppa.launchpad.net/jcfp/nobetas/ubuntu bionic main" >> /etc/apt/sources.list.d/sabnzbd.list && \
+ echo "deb-src http://ppa.launchpad.net/jcfp/nobetas/ubuntu bionic main" >> /etc/apt/sources.list.d/sabnzbd.list && \
+ echo "deb http://ppa.launchpad.net/jcfp/sab-addons/ubuntu bionic main" >> /etc/apt/sources.list.d/sabnzbd.list && \
+ echo "deb-src http://ppa.launchpad.net/jcfp/sab-addons/ubuntu bionic main" >> /etc/apt/sources.list.d/sabnzbd.list && \
+ echo "**** install packages ****" && \
+ if [ -z ${SABNZBD_VERSION+x} ]; then \
+	SABNZBD="sabnzbdplus"; \
+ else \
+	SABNZBD="sabnzbdplus=${SABNZBD_VERSION}"; \
+ fi && \
+ add-apt-repository multiverse && \
+ apt-get update && \
+ apt-get install -y \
+ 	openvpn \
+    sudo \
+	curl \
+	wget \
+	p7zip-full \
+	par2-tbb \
+	python-sabyenc \
+	${SABNZBD} \
+	unrar \
+    ufw \
+    iputils-ping \
+	unzip \
+	zip && \
+ wget https://github.com/Yelp/dumb-init/releases/download/v1.2.2/dumb-init_1.2.2_amd64.deb && \
+ dpkg -i dumb-init*.deb && \
+ rm -rf dumb-init*.deb && \
+ curl -L https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-linux-amd64-v0.6.1.tar.gz | tar -C /usr/local/bin -xzv && \
+ echo -e "USER=root\nHOST=0.0.0.0\nPORT=8081\nCONFIG=/config/sabnzbd-home\nX_FRAME_OPTIONS=0\n" > /etc/default/sabnzbdplus && \
+ echo "**** cleanup ****" && \
+ apt-get clean && \
+ rm -rf \
+	/tmp/* \
+	/var/lib/apt/lists/* \
+	/var/tmp/* && \
+ service sabnzbdplus start
+
+COPY root/ /
+
+ADD openvpn/ /etc/openvpn/
+ADD transmission/ /etc/transmission/
+ADD scripts /etc/scripts/
+
 ENV \
-	HOME="/config" \
-	PYTHONIOENCODING=utf-8 \
-	OPENVPN_USERNAME=**None** \
+    OPENVPN_USERNAME=**None** \
     OPENVPN_PASSWORD=**None** \
     OPENVPN_PROVIDER=**None** \
     GLOBAL_APPLY_PERMISSIONS=true \
-    TRANSMISSION_ALT_SPEED_DOWN=500 \
+    TRANSMISSION_ALT_SPEED_DOWN=50 \
     TRANSMISSION_ALT_SPEED_ENABLED=false \
     TRANSMISSION_ALT_SPEED_TIME_BEGIN=540 \
     TRANSMISSION_ALT_SPEED_TIME_DAY=127 \
@@ -37,7 +107,7 @@ ENV \
     TRANSMISSION_ENCRYPTION=1 \
     TRANSMISSION_IDLE_SEEDING_LIMIT=30 \
     TRANSMISSION_IDLE_SEEDING_LIMIT_ENABLED=false \
-    TRANSMISSION_INCOMPLETE_DIR=/data/incomplete \
+    TRANSMISSION_INCOMPLETE_DIR=/downloads/incomplete \
     TRANSMISSION_INCOMPLETE_DIR_ENABLED=true \
     TRANSMISSION_LPD_ENABLED=false \
     TRANSMISSION_MAX_PEERS_GLOBAL=200 \
@@ -57,8 +127,8 @@ ENV \
     TRANSMISSION_PREFETCH_ENABLED=1 \
     TRANSMISSION_QUEUE_STALLED_ENABLED=true \
     TRANSMISSION_QUEUE_STALLED_MINUTES=30 \
-    TRANSMISSION_RATIO_LIMIT=0 \
-    TRANSMISSION_RATIO_LIMIT_ENABLED=true \
+    TRANSMISSION_RATIO_LIMIT=2 \
+    TRANSMISSION_RATIO_LIMIT_ENABLED=false \
     TRANSMISSION_RENAME_PARTIAL_FILES=true \
     TRANSMISSION_RPC_AUTHENTICATION_REQUIRED=false \
     TRANSMISSION_RPC_BIND_ADDRESS=0.0.0.0 \
@@ -78,8 +148,8 @@ ENV \
     TRANSMISSION_SEED_QUEUE_SIZE=10 \
     TRANSMISSION_SPEED_LIMIT_DOWN=100 \
     TRANSMISSION_SPEED_LIMIT_DOWN_ENABLED=false \
-    TRANSMISSION_SPEED_LIMIT_UP=1 \
-    TRANSMISSION_SPEED_LIMIT_UP_ENABLED=true \
+    TRANSMISSION_SPEED_LIMIT_UP=100 \
+    TRANSMISSION_SPEED_LIMIT_UP_ENABLED=false \
     TRANSMISSION_START_ADDED_TORRENTS=true \
     TRANSMISSION_TRASH_ORIGINAL_TORRENT_FILES=false \
     TRANSMISSION_UMASK=2 \
@@ -87,7 +157,7 @@ ENV \
     TRANSMISSION_UPLOAD_LIMIT_ENABLED=0 \
     TRANSMISSION_UPLOAD_SLOTS_PER_TORRENT=14 \
     TRANSMISSION_UTP_ENABLED=true \
-    TRANSMISSION_WATCH_DIR=/data/watch \
+    TRANSMISSION_WATCH_DIR=/config/watch \
     TRANSMISSION_WATCH_DIR_ENABLED=true \
     TRANSMISSION_HOME=/config/transmission-home \
     TRANSMISSION_WATCH_DIR_FORCE_GENERIC=false \
@@ -104,66 +174,7 @@ ENV \
     WEBPROXY_PORT=8888 \
     HEALTH_CHECK_HOST=google.com
 
-
-
-VOLUME /config /downloads
-
-RUN \
- apt-get update && \
- apt-get install -y \
- 	software-properties-common && \
- add-apt-repository ppa:transmissionbt/ppa && \
- apt-get install -y transmission-cli transmission-common transmission-daemon
- 
-RUN \
- echo "***** add sabnzbd repositories ****" && \
- apt-key adv --keyserver hkp://keyserver.ubuntu.com:11371 --recv-keys 0x98703123E0F52B2BE16D586EF13930B14BB9F05F && \
- echo "deb http://ppa.launchpad.net/jcfp/nobetas/ubuntu xenial main" >> /etc/apt/sources.list.d/sabnzbd.list && \
- echo "deb-src http://ppa.launchpad.net/jcfp/nobetas/ubuntu xenial main" >> /etc/apt/sources.list.d/sabnzbd.list && \
- echo "deb http://ppa.launchpad.net/jcfp/sab-addons/ubuntu xenial main" >> /etc/apt/sources.list.d/sabnzbd.list && \
- echo "deb-src http://ppa.launchpad.net/jcfp/sab-addons/ubuntu xenial main" >> /etc/apt/sources.list.d/sabnzbd.list && \
- echo "**** install packages ****" && \
- if [ -z ${SABNZBD_VERSION+x} ]; then \
-	SABNZBD="sabnzbdplus"; \
- else \
-	SABNZBD="sabnzbdplus=${SABNZBD_VERSION}"; \
- fi && \
- add-apt-repository multiverse && \
- apt-get update && \
- apt-get install -y \
- 	openvpn \
-	curl \
-	wget \
-	p7zip-full \
-	par2-tbb \
-	python-sabyenc \
-	${SABNZBD} \
-	unrar \
-	unzip \
-	zip && \
- wget https://github.com/Yelp/dumb-init/releases/download/v1.2.2/dumb-init_1.2.2_amd64.deb && \
- dpkg -i dumb-init*.deb && \
- rm -rf dumb-init*.deb && \
- curl -L https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-linux-amd64-v0.6.1.tar.gz | tar -C /usr/local/bin -xzv && \
- echo "USER=root\nHOST=0.0.0.0\nPORT=8081\nCONFIG=/config/sabnzbd-home\nX_FRAME_OPTIONS=0\n" > /etc/default/sabnzbdplus && \
- echo "**** cleanup ****" && \
- apt-get clean && \
- rm -rf \
-	/tmp/* \
-	/var/lib/apt/lists/* \
-	/var/tmp/* && \
- service sabnzbdplus start
-
 # add local files
-COPY root/ /
-
-RUN \
- apt-get update &&\
- apt-get install -y iputils-ping
-
-ADD openvpn/ /etc/openvpn/
-ADD transmission/ /etc/transmission/
-ADD scripts /etc/scripts/
 
 HEALTHCHECK --interval=5m CMD /etc/scripts/healthcheck.sh
 
