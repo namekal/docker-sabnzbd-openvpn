@@ -25,7 +25,7 @@ RUN \
     software-properties-common && \
  add-apt-repository ppa:transmissionbt/ppa && \
  wget -O - https://swupdate.openvpn.net/repos/repo-public.gpg | apt-key add - && \
- echo "deb http://build.openvpn.net/debian/openvpn/stable bionic main" > /etc/apt/sources.list.d/openvpn-aptrepo.list && \
+ echo "deb http://build.openvpn.net/debian/openvpn/stable xenial main" > /etc/apt/sources.list.d/openvpn-aptrepo.list && \
  apt update && \
  apt-get install -y transmission-cli transmission-common transmission-daemon bc \
  python2.7 python2.7-pysqlite2 && ln -sf /usr/bin/python2.7 /usr/bin/python2
@@ -45,10 +45,10 @@ RUN \
 RUN \
  echo "***** add sabnzbd repositories ****" && \
  apt-key adv --keyserver hkp://keyserver.ubuntu.com:11371 --recv-keys 0x98703123E0F52B2BE16D586EF13930B14BB9F05F && \
- echo "deb http://ppa.launchpad.net/jcfp/nobetas/ubuntu bionic main" >> /etc/apt/sources.list.d/sabnzbd.list && \
- echo "deb-src http://ppa.launchpad.net/jcfp/nobetas/ubuntu bionic main" >> /etc/apt/sources.list.d/sabnzbd.list && \
- echo "deb http://ppa.launchpad.net/jcfp/sab-addons/ubuntu bionic main" >> /etc/apt/sources.list.d/sabnzbd.list && \
- echo "deb-src http://ppa.launchpad.net/jcfp/sab-addons/ubuntu bionic main" >> /etc/apt/sources.list.d/sabnzbd.list && \
+ echo "deb http://ppa.launchpad.net/jcfp/nobetas/ubuntu xenial main" >> /etc/apt/sources.list.d/sabnzbd.list && \
+ echo "deb-src http://ppa.launchpad.net/jcfp/nobetas/ubuntu xenial main" >> /etc/apt/sources.list.d/sabnzbd.list && \
+ echo "deb http://ppa.launchpad.net/jcfp/sab-addons/ubuntu xenial main" >> /etc/apt/sources.list.d/sabnzbd.list && \
+ echo "deb-src http://ppa.launchpad.net/jcfp/sab-addons/ubuntu xenial main" >> /etc/apt/sources.list.d/sabnzbd.list && \
  echo "**** install packages ****" && \
  if [ -z ${SABNZBD_VERSION+x} ]; then \
     SABNZBD="sabnzbdplus"; \
