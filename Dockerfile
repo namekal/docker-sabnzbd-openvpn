@@ -15,12 +15,9 @@ VOLUME /config /downloads
 RUN \
  apt-get update && apt-get upgrade -y && \
  apt-get install -y \
-<<<<<<< HEAD
-=======
     wget \
     curl \
->>>>>>> -Update transmission install run block
- 	software-properties-common && \
+    software-properties-common && \
  add-apt-repository ppa:transmissionbt/ppa && \
  wget -O - https://swupdate.openvpn.net/repos/repo-public.gpg | apt-key add - && \
  echo "deb http://build.openvpn.net/debian/openvpn/stable bionic main" > /etc/apt/sources.list.d/openvpn-aptrepo.list && \
@@ -47,29 +44,24 @@ RUN \
  echo "deb-src http://ppa.launchpad.net/jcfp/sab-addons/ubuntu bionic main" >> /etc/apt/sources.list.d/sabnzbd.list && \
  echo "**** install packages ****" && \
  if [ -z ${SABNZBD_VERSION+x} ]; then \
-	SABNZBD="sabnzbdplus"; \
+    SABNZBD="sabnzbdplus"; \
  else \
-	SABNZBD="sabnzbdplus=${SABNZBD_VERSION}"; \
+    SABNZBD="sabnzbdplus=${SABNZBD_VERSION}"; \
  fi && \
  add-apt-repository multiverse && \
  apt-get update && \
  apt-get install -y \
- 	openvpn \
+    openvpn \
     sudo \
-<<<<<<< HEAD
-	curl \
-	wget \
-=======
->>>>>>> -Update transmission install run block
-	p7zip-full \
-	par2-tbb \
-	python-sabyenc \
-	${SABNZBD} \
-	unrar \
+    p7zip-full \
+    par2-tbb \
+    python-sabyenc \
+    ${SABNZBD} \
+    unrar \
     ufw \
     iputils-ping \
-	unzip \
-	zip && \
+    unzip \
+    zip && \
  wget https://github.com/Yelp/dumb-init/releases/download/v1.2.2/dumb-init_1.2.2_amd64.deb && \
  dpkg -i dumb-init*.deb && \
  rm -rf dumb-init*.deb && \
@@ -78,9 +70,9 @@ RUN \
  echo "**** cleanup ****" && \
  apt-get clean && \
  rm -rf \
-	/tmp/* \
-	/var/lib/apt/lists/* \
-	/var/tmp/* && \
+    /tmp/* \
+    /var/lib/apt/lists/* \
+    /var/tmp/* && \
  service sabnzbdplus start
 
 COPY root/ /
