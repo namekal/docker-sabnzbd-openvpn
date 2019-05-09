@@ -17,18 +17,20 @@ RUN \
  apt-get install -y \
     wget \
     curl \
-    openvpn \
     sudo \
     unzip \
     zip \
     jq \
     git \
-    software-properties-common && \
+    software-properties-common
+RUN \
+apt-get update && \
  add-apt-repository ppa:transmissionbt/ppa && \
  wget -O - https://swupdate.openvpn.net/repos/repo-public.gpg | apt-key add - && \
  echo "deb http://build.openvpn.net/debian/openvpn/stable xenial main" > /etc/apt/sources.list.d/openvpn-aptrepo.list && \
  apt update && \
  apt-get install -y transmission-cli transmission-common transmission-daemon bc \
+ openvpn \
  python2.7 python2.7-pysqlite2 && ln -sf /usr/bin/python2.7 /usr/bin/python2
 
 RUN \
