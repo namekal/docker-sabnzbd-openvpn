@@ -186,6 +186,6 @@ ENV \
 HEALTHCHECK --interval=5m CMD /etc/scripts/healthcheck.sh
 
 # ports and volumes
-EXPOSE 8081 9090 9091
+EXPOSE 8080 9090 9091
 
 CMD ["dumb-init", "/etc/openvpn/start.sh"]
