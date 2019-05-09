@@ -17,6 +17,10 @@ RUN \
  apt-get install -y \
     wget \
     curl \
+    openvpn \
+    sudo \
+    unzip \
+    zip \
     software-properties-common && \
  add-apt-repository ppa:transmissionbt/ppa && \
  wget -O - https://swupdate.openvpn.net/repos/repo-public.gpg | apt-key add - && \
@@ -48,20 +52,17 @@ RUN \
  else \
     SABNZBD="sabnzbdplus=${SABNZBD_VERSION}"; \
  fi && \
+ apt-get update && \
  add-apt-repository multiverse && \
  apt-get update && \
  apt-get install -y \
-    openvpn \
-    sudo \
     p7zip-full \
     par2-tbb \
     python-sabyenc \
     ${SABNZBD} \
     unrar \
     ufw \
-    iputils-ping \
-    unzip \
-    zip && \
+    iputils-ping && \
  wget https://github.com/Yelp/dumb-init/releases/download/v1.2.2/dumb-init_1.2.2_amd64.deb && \
  dpkg -i dumb-init*.deb && \
  rm -rf dumb-init*.deb && \
