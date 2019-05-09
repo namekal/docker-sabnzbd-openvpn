@@ -21,14 +21,17 @@ RUN \
     sudo \
     unzip \
     zip \
+    jq \
     software-properties-common && \
  add-apt-repository ppa:transmissionbt/ppa && \
  wget -O - https://swupdate.openvpn.net/repos/repo-public.gpg | apt-key add - && \
  echo "deb http://build.openvpn.net/debian/openvpn/stable bionic main" > /etc/apt/sources.list.d/openvpn-aptrepo.list && \
  apt update && \
  apt-get install -y transmission-cli transmission-common transmission-daemon bc \
- python2.7 python2.7-pysqlite2 && ln -sf /usr/bin/python2.7 /usr/bin/python2 \
- && wget https://github.com/Secretmapper/combustion/archive/release.zip \
+ python2.7 python2.7-pysqlite2 && ln -sf /usr/bin/python2.7 /usr/bin/python2
+
+RUN \
+ wget https://github.com/Secretmapper/combustion/archive/release.zip \
     && unzip release.zip -d /opt/transmission-ui/ \
     && rm release.zip \
     && mkdir /opt/transmission-ui/transmission-web-control \
