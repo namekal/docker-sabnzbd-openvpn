@@ -67,7 +67,6 @@ if [[ -n "${OPENVPN_CONFIG-}" ]]; then
     echo "${#OPENVPN_CONFIG_ARRAY[@]} servers found in OPENVPN_CONFIG, ${OPENVPN_CONFIG_ARRAY[${OPENVPN_CONFIG_RANDOM}]} chosen randomly"
     OPENVPN_CONFIG="${OPENVPN_CONFIG_ARRAY[${OPENVPN_CONFIG_RANDOM}]}"
   fi
-
   if [[ -f "${VPN_PROVIDER_CONFIGS}/${OPENVPN_CONFIG}.ovpn" ]]; then
     echo "Starting OpenVPN using config ${OPENVPN_CONFIG}.ovpn"
     OPENVPN_CONFIG="${VPN_PROVIDER_CONFIGS}/${OPENVPN_CONFIG}.ovpn"
@@ -97,13 +96,13 @@ else
 fi
 
 # add transmission credentials from env vars
-echo $TRANSMISSION_RPC_USERNAME > /config/transmission-credentials.txt
-echo $TRANSMISSION_RPC_PASSWORD >> /config/transmission-credentials.txt
+echo "${TRANSMISSION_RPC_USERNAME}" > /config/transmission-credentials.txt
+echo "${TRANSMISSION_RPC_PASSWORD}" >> /config/transmission-credentials.txt
 
 # Persist transmission settings for use by transmission-daemon
-dockerize -template /etc/transmission/environment-variables.tmpl:/etc/transmission/environment-variables.sh /bin/true
+dockerize -template /etc/transmission/environment-variables.tmpl:/etc/transmission/environment-variables.sh
 
-TRANSMISSION_CONTROL_OPTS="--script-security 2 --up /etc/transmission/start.sh --down /etc/transmission/stop.sh"
+TRANSMISSION_CONTROL_OPTS="--script-security 2 --up-delay --up /etc/openvpn/tunnelUp.sh --down /etc/openvpn/tunnelDown.sh"
 
 ## If we use UFW or the LOCAL_NETWORK we need to grab network config info
 if [[ "${ENABLE_UFW,,}" == "true" ]] || [[ -n "${LOCAL_NETWORK-}" ]]; then
@@ -147,7 +146,22 @@ if [[ "${ENABLE_UFW,,}" == "true" ]]; then
   sed -i -e s/IPV6=yes/IPV6=no/ /etc/default/ufw
   ufw enable
 
+  if [[ "${TRANSMISSION_PEER_PORT_RANDOM_ON_START,,}" == "true" ]]; then
+    PEER_PORT="${TRANSMISSION_PEER_PORT_RANDOM_LOW}:${TRANSMISSION_PEER_PORT_RANDOM_HIGH}"
+  else
+    PEER_PORT="${TRANSMISSION_PEER_PORT}"
+  fi
+
   ufwAllowPort PEER_PORT
+
+  if [[ "${WEBPROXY_ENABLED,,}" == "true" ]]; then
+    ufwAllowPort WEBPROXY_PORT
+  fi
+  if [[ "${UFW_ALLOW_GW_NET,,}" == "true" ]]; then
+    ufwAllowPortLong TRANSMISSION_RPC_PORT GW_CIDR
+  else
+    ufwAllowPortLong TRANSMISSION_RPC_PORT GW
+  fi
 
   if [[ -n "${UFW_EXTRA_PORTS-}"  ]]; then
     for port in ${UFW_EXTRA_PORTS//,/ }; do
@@ -166,6 +180,7 @@ if [[ -n "${LOCAL_NETWORK-}" ]]; then
       echo "adding route to local network ${localNet} via ${GW} dev ${INT}"
       /sbin/ip r a "${localNet}" via "${GW}" dev "${INT}"
       if [[ "${ENABLE_UFW,,}" == "true" ]]; then
+        ufwAllowPortLong TRANSMISSION_RPC_PORT localNet
         if [[ -n "${UFW_EXTRA_PORTS-}" ]]; then
           for port in ${UFW_EXTRA_PORTS//,/ }; do
             ufwAllowPortLong port localNet
@@ -176,5 +191,4 @@ if [[ -n "${LOCAL_NETWORK-}" ]]; then
   fi
 fi
 
-
-exec openvpn $TRANSMISSION_CONTROL_OPTS $OPENVPN_OPTS --config "$OPENVPN_CONFIG"
+exec openvpn ${TRANSMISSION_CONTROL_OPTS} ${OPENVPN_OPTS} --config "${OPENVPN_CONFIG}"
