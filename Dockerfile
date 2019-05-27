@@ -172,10 +172,10 @@ ENV \
     UFW_ALLOW_GW_NET=false \
     'UFW_EXTRA_PORTS'='""' \
     UFW_DISABLE_IPTABLES_REJECT=false \
-    'TRANSMISSION_WEB_UI'='""' \
+    TRANSMISSION_WEB_UI= \
     'PUID'='""' \
     'PGID'='""' \
-    'TRANSMISSION_WEB_HOME'='""' \
+    TRANSMISSION_WEB_HOME= \
     'DROP_DEFAULT_ROUTE'='""' \
     WEBPROXY_ENABLED=false \
     WEBPROXY_PORT=8888 \
