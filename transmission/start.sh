@@ -24,7 +24,7 @@ fi
 echo "Updating TRANSMISSION_BIND_ADDRESS_IPV4 to the ip of $1 : $4"
 export TRANSMISSION_BIND_ADDRESS_IPV4=$4
 
-if [[ "\"\"" = "$TRANSMISSION_WEB_UI" ]]; then
+if [[ "\"\"" = "$TRANSMISSION_WEB_HOME" ]]; then
   echo "Clearing TRANSMISSION_WEB_HOME"
   unset TRANSMISSION_WEB_HOME
 fi
