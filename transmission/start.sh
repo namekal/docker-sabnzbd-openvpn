@@ -13,14 +13,6 @@ if [[ "$4" = "" ]]; then
    exit 1
 fi
 
-# If transmission-pre-start.sh exists, run it
-if [[ -x /scripts/transmission-pre-start.sh ]]
-then
-   echo "Executing /scripts/transmission-pre-start.sh"
-   /scripts/transmission-pre-start.sh "$@"
-   echo "/scripts/transmission-pre-start.sh returned $?"
-fi
-
 echo "Updating TRANSMISSION_BIND_ADDRESS_IPV4 to the ip of $1 : $4"
 export TRANSMISSION_BIND_ADDRESS_IPV4=$4
 
