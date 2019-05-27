@@ -24,11 +24,6 @@ fi
 echo "Updating TRANSMISSION_BIND_ADDRESS_IPV4 to the ip of $1 : $4"
 export TRANSMISSION_BIND_ADDRESS_IPV4=$4
 
-if [[ "\"\"" = "$TRANSMISSION_WEB_UI" ]]; then
-  echo "Clearing TRANSMISSION_WEB_HOME"
-  unset TRANSMISSION_WEB_HOME
-fi
-
 if [[ "combustion" = "$TRANSMISSION_WEB_UI" ]]; then
   echo "Using Combustion UI, overriding TRANSMISSION_WEB_HOME"
   export TRANSMISSION_WEB_HOME=/opt/transmission-ui/combustion-release
@@ -37,6 +32,11 @@ fi
 if [[ "kettu" = "$TRANSMISSION_WEB_UI" ]]; then
   echo "Using Kettu UI, overriding TRANSMISSION_WEB_HOME"
   export TRANSMISSION_WEB_HOME=/opt/transmission-ui/kettu
+fi
+
+if [[ "\"\"" = "$TRANSMISSION_WEB_HOME" ]]; then
+  echo "Clearing TRANSMISSION_WEB_HOME"
+  export TRANSMISSION_WEB_HOME=/usr/share/transmission/web
 fi
 
 if [[ "transmission-web-control" = "$TRANSMISSION_WEB_UI" ]]; then
