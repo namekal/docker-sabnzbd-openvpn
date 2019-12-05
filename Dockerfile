@@ -39,9 +39,19 @@ RUN \
 	p7zip-full \
 	par2-tbb \
 	python-sabyenc \
+    python-pip \
 	${SABNZBD} \
 	unrar \
 	unzip && \
+pip install --no-cache-dir \
+	apprise \
+	chardet \
+	pynzb \
+	requests \
+	sabyenc \
+	setuptools \
+	pynzbget \
+	six && \
  wget https://github.com/Yelp/dumb-init/releases/download/v1.2.2/dumb-init_1.2.2_amd64.deb && \
  dpkg -i dumb-init*.deb && \
  rm -rf dumb-init*.deb && \
