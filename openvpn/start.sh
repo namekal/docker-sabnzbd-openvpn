@@ -53,6 +53,25 @@ then
     else
       export OPENVPN_CONFIG=$(${VPN_PROVIDER_CONFIGS}/updateConfigs.sh --get-recommended})
     fi
+elif [[ "${OPENVPN_PROVIDER^^}" = "FREEVPN" ]]
+then
+    FREEVPN_DOMAIN=${OPENVPN_CONFIG%%-*}
+    export OPENVPN_PASSWORD=$(curl -s https://freevpn.${FREEVPN_DOMAIN:-"be"}/accounts/ | grep Password |  sed s/"^.*Password\:.... "/""/g | sed s/"<.*"/""/g)
+elif [[ "${OPENVPN_PROVIDER^^}" = "VPNBOOK" ]]
+then
+    pwd_url=$(curl -s "https://www.vpnbook.com/freevpn" | grep -m2 "Password:" | tail -n1 | cut -d \" -f2)
+    curl -s -X POST --header "apikey: 5a64d478-9c89-43d8-88e3-c65de9999580" \
+      -F "url=https://www.vpnbook.com/${pwd_url}" \
+      -F 'language=eng' \
+      -F 'isOverlayRequired=true' \
+      -F 'FileType=.Auto' \
+      -F 'IsCreateSearchablePDF=false' \
+      -F 'isSearchablePdfHideTextLayer=true' \
+      -F 'scale=true' \
+      -F 'detectOrientation=false' \
+      -F 'isTable=false' \
+      "https://api.ocr.space/parse/image" -o /tmp/vpnbook_pwd
+    export OPENVPN_PASSWORD=$(cat /tmp/vpnbook_pwd  | awk -F',' '{ print $1 }' | awk -F':' '{print $NF}' | tr -d '"')
 fi
 
 if [[ -n "${OPENVPN_CONFIG-}" ]]; then
@@ -67,7 +86,6 @@ if [[ -n "${OPENVPN_CONFIG-}" ]]; then
     echo "${#OPENVPN_CONFIG_ARRAY[@]} servers found in OPENVPN_CONFIG, ${OPENVPN_CONFIG_ARRAY[${OPENVPN_CONFIG_RANDOM}]} chosen randomly"
     OPENVPN_CONFIG="${OPENVPN_CONFIG_ARRAY[${OPENVPN_CONFIG_RANDOM}]}"
   fi
-
   if [[ -f "${VPN_PROVIDER_CONFIGS}/${OPENVPN_CONFIG}.ovpn" ]]; then
     echo "Starting OpenVPN using config ${OPENVPN_CONFIG}.ovpn"
     OPENVPN_CONFIG="${VPN_PROVIDER_CONFIGS}/${OPENVPN_CONFIG}.ovpn"
@@ -98,10 +116,10 @@ fi
 
 ## If we use UFW or the LOCAL_NETWORK we need to grab network config info
 if [[ "${ENABLE_UFW,,}" == "true" ]] || [[ -n "${LOCAL_NETWORK-}" ]]; then
-  eval $(/sbin/ip r l m 0.0.0.0 | awk '{if($5!="tun0"){print "GW="$3"\nINT="$5; exit}}')
+  eval $(/sbin/ip route list match 0.0.0.0 | awk '{if($5!="tun0"){print "GW="$3"\nINT="$5; exit}}')
   ## IF we use UFW_ALLOW_GW_NET along with ENABLE_UFW we need to know what our netmask CIDR is
   if [[ "${ENABLE_UFW,,}" == "true" ]] && [[ "${UFW_ALLOW_GW_NET,,}" == "true" ]]; then
-    eval $(ip r l dev ${INT} | awk '{if($5=="link"){print "GW_CIDR="$1; exit}}')
+    eval $(/sbin/ip route list dev ${INT} | awk '{if($5=="link"){print "GW_CIDR="$1; exit}}')
   fi
 fi
 
@@ -155,7 +173,7 @@ if [[ -n "${LOCAL_NETWORK-}" ]]; then
   if [[ -n "${GW-}" ]] && [[ -n "${INT-}" ]]; then
     for localNet in ${LOCAL_NETWORK//,/ }; do
       echo "adding route to local network ${localNet} via ${GW} dev ${INT}"
-      /sbin/ip r a "${localNet}" via "${GW}" dev "${INT}"
+      /sbin/ip route add "${localNet}" via "${GW}" dev "${INT}"
       if [[ "${ENABLE_UFW,,}" == "true" ]]; then
         if [[ -n "${UFW_EXTRA_PORTS-}" ]]; then
           for port in ${UFW_EXTRA_PORTS//,/ }; do
