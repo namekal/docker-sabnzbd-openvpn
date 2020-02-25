@@ -44,6 +44,7 @@ RUN \
 	${SABNZBD} \
 	unrar \
 	unzip && \
+pip install --upgrade pip && \
 pip install --no-cache-dir \
 	apprise \
 	chardet \
