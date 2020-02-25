@@ -1,4 +1,3 @@
 #!/bin/bash
 
-/etc/transmission/stop.sh
-[[ ! -f /opt/tinyproxy/stop.sh ]] || /opt/tinyproxy/stop.sh
+dumb-init "/etc/init.d/sabnzbdplus stop"
