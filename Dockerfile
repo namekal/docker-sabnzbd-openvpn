@@ -35,6 +35,7 @@ RUN \
  apt-get install -y \
  	openvpn \
 	curl \
+	jq \
 	wget \
 	p7zip-full \
 	par2-tbb \
