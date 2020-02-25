@@ -1,3 +1,3 @@
 #!/bin/bash
 
-service sabnzbdplus start &
+exec service sabnzbdplus start
