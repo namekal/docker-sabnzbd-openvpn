@@ -66,8 +66,7 @@ pip install --no-cache-dir \
  rm -rf \
 	/tmp/* \
 	/var/lib/apt/lists/* \
-	/var/tmp/* && \
- service sabnzbdplus enable
+	/var/tmp/*
 
 # add local files
 COPY root/ /
