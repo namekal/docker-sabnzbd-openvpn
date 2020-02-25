@@ -40,6 +40,7 @@ RUN \
 	par2-tbb \
 	python-sabyenc \
     python-pip \
+	python3 \
 	${SABNZBD} \
 	unrar \
 	unzip && \
