@@ -1,3 +1,3 @@
 #!/bin/bash
 
-dumb-init "/etc/init.d/sabnzbdplus stop"
+/etc/init.d/sabnzbdplus stop
