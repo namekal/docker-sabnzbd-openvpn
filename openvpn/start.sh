@@ -188,7 +188,7 @@ if [[ -n "${LOCAL_NETWORK-}" ]]; then
   fi
 fi
 
-CONTROL_OPTS="--script-security 2 --up /etc/openvpn/tunnelUp.sh --down /etc/openvpn/tunnelDown.sh"
+#CONTROL_OPTS="--script-security 2 --up /etc/openvpn/tunnelUp.sh --down /etc/openvpn/tunnelDown.sh"
 
 #/etc/openvpn/start.sh: line 189: start --down /etc/init.d/sabnzbdplus: No such file or directory
 
