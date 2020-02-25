@@ -23,6 +23,7 @@ echo "Using OpenVPN provider: ${OPENVPN_PROVIDER}"
 
 # If openvpn-pre-start.sh exists, run it
 if [ -x /scripts/openvpn-pre-start.sh ]
+
 then
    echo "Executing /scripts/openvpn-pre-start.sh"
    /scripts/openvpn-pre-start.sh "$@"
