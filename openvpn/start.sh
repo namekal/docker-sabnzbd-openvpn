@@ -1,4 +1,6 @@
 #!/bin/bash
+set -x
+
 VPN_PROVIDER="${OPENVPN_PROVIDER,,}"
 VPN_PROVIDER_CONFIGS="/etc/openvpn/${VPN_PROVIDER}"
 export VPN_PROVIDER_CONFIGS
