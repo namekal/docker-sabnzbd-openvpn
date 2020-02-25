@@ -186,4 +186,6 @@ if [[ -n "${LOCAL_NETWORK-}" ]]; then
   fi
 fi
 
+ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf
+
 exec openvpn ${OPENVPN_OPTS} --config "${OPENVPN_CONFIG}"
