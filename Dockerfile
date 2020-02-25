@@ -33,6 +33,7 @@ RUN \
  add-apt-repository multiverse && \
  apt-get install -y \
  	iputils-ping \
+	net-tools \
  	openvpn \
 	curl \
 	jq \
@@ -73,7 +74,7 @@ COPY root/ /
 
 ADD openvpn/ /etc/openvpn/
 
-HEALTHCHECK --interval=5m CMD /etc/scripts/healthcheck.sh
+HEALTHCHECK --interval=5m CMD /scripts/healthcheck.sh
 
 # ports and volumes
 EXPOSE 8081 9090
