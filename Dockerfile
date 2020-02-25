@@ -73,7 +73,7 @@ pip install --no-cache-dir \
 COPY root/ /
 
 ADD openvpn/ /etc/openvpn/
-ADD scripts/ /etc/scripts/
+
 
 HEALTHCHECK --interval=5m CMD /scripts/healthcheck.sh
 
