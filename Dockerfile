@@ -31,8 +31,8 @@ RUN \
  apt-get install -y \
  	software-properties-common && \
  add-apt-repository multiverse && \
- apt-get update && \
  apt-get install -y \
+ 	iputils-ping \
  	openvpn \
 	curl \
 	jq \
@@ -40,7 +40,7 @@ RUN \
 	p7zip-full \
 	par2-tbb \
 	python-sabyenc \
-    python-pip \
+    	python-pip \
 	python3 \
 	${SABNZBD} \
 	unrar \
