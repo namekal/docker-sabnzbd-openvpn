@@ -1,4 +1,3 @@
 #!/bin/bash
 
-/etc/transmission/start.sh "$@"
-[[ ! -f /opt/tinyproxy/start.sh ]] || /opt/tinyproxy/start.sh
+dumb-init "/etc/init.d/sabnzbdplus start"
