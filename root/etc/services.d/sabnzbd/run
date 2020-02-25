@@ -2,6 +2,6 @@
 
 exec \
 	s6-setuidgid abc /usr/bin/sabnzbdplus \
-	--config-file /config --server 0.0.0.0:8080
+	--config-file /config/sabnzbd-home --server 0.0.0.0:8081
 
 
