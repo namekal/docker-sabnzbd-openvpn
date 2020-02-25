@@ -188,4 +188,4 @@ fi
 
 CONTROL_OPTS="--script-security 2 --up /etc/init.d/sabnzbdplus start --down /etc/init.d/sabnzbdplus stop"
 
-exec openvpn "${CONTROL_OPTS}" ${OPENVPN_OPTS} --config "${OPENVPN_CONFIG}"
+exec openvpn ${CONTROL_OPTS} ${OPENVPN_OPTS} --config "${OPENVPN_CONFIG}"
