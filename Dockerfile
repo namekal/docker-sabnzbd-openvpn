@@ -35,7 +35,6 @@ RUN \
  	iputils-ping \
 	net-tools \
  	openvpn \
-	curl \
 	jq \
 	wget \
 	p7zip-full \
