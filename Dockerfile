@@ -58,7 +58,6 @@ pip install --no-cache-dir \
  wget https://github.com/Yelp/dumb-init/releases/download/v1.2.2/dumb-init_1.2.2_amd64.deb && \
  dpkg -i dumb-init*.deb && \
  rm -rf dumb-init*.deb && \
- curl -L https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-linux-amd64-v0.6.1.tar.gz | tar -C /usr/local/bin -xzv && \
  echo "USER=root\nHOST=0.0.0.0\nPORT=8081\nCONFIG=/config/sabnzbd-home\n" > /etc/default/sabnzbdplus && \
  echo "**** cleanup ****" && \
  apt-get clean && \
