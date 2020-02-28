@@ -1,5 +1,5 @@
-#!/bin/bash
-set -x
+#!/usr/bin/with-contenv bash
+
 
 VPN_PROVIDER="${OPENVPN_PROVIDER,,}"
 VPN_PROVIDER_CONFIGS="/etc/openvpn/${VPN_PROVIDER}"
@@ -188,9 +188,4 @@ if [[ -n "${LOCAL_NETWORK-}" ]]; then
   fi
 fi
 
-#CONTROL_OPTS="--script-security 2 --up /etc/openvpn/tunnelUp.sh --down /etc/openvpn/tunnelDown.sh"
 
-#/etc/openvpn/start.sh: line 189: start --down /etc/init.d/sabnzbdplus: No such file or directory
-
-##temporary disable
-#exec openvpn ${CONTROL_OPTS} ${OPENVPN_OPTS} --config "${OPENVPN_CONFIG}"

@@ -76,5 +76,3 @@ HEALTHCHECK --interval=5m CMD /scripts/healthcheck.sh
 
 # ports and volumes
 EXPOSE 8081 9090
-
-CMD ["dumb-init"]
