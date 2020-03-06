@@ -102,6 +102,8 @@ else
   OPENVPN_CONFIG="${VPN_PROVIDER_CONFIGS}/default.ovpn"
 fi
 
+echo "#!/usr/bin/with-contenv bash" > /config/openvpn-config
+echo "OPENVPN_CONFIG=${OPENVPN_CONFIG}" >> /config/openvpn-config
 # add OpenVPN user/pass
 if [[ "${OPENVPN_USERNAME}" == "**None**" ]] || [[ "${OPENVPN_PASSWORD}" == "**None**" ]] ; then
   if [[ ! -f /config/openvpn-credentials.txt ]] ; then
