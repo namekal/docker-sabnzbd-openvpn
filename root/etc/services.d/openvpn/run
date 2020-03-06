@@ -1,6 +1,8 @@
 #!/usr/bin/with-contenv bash
 set -x
 
+. /config/openvpn-config
+
 #CONTROL_OPTS="--script-security 2 --up /etc/openvpn/tunnelUp.sh --down /etc/openvpn/tunnelDown.sh"
 
 exec \
