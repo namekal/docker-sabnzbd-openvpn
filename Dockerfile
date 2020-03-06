@@ -1,10 +1,10 @@
 FROM lsiobase/ubuntu:xenial
 
 # set version label
-ARG BUILD_DATE
-ARG VERSION
+#ARG BUILD_DATE
+#ARG VERSION
 ARG SABNZBD_VERSION
-LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
+LABEL build_version="Base-image info: Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
 LABEL maintainer="namekal"
 
 # environment settings
@@ -12,7 +12,7 @@ ARG DEBIAN_FRONTEND="noninteractive"
 ENV HOME="/config" \
 PYTHONIOENCODING=utf-8
 
-VOLUME /config /downloads /incomplete-downloads /data
+VOLUME /config /downloads
 
 RUN \
  echo "***** add sabnzbd repositories ****" && \
@@ -31,18 +31,21 @@ RUN \
  apt-get install -y \
  	software-properties-common && \
  add-apt-repository multiverse && \
- apt-get update && \
  apt-get install -y \
+ 	iputils-ping \
+	net-tools \
  	openvpn \
-	curl \
+	jq \
 	wget \
 	p7zip-full \
 	par2-tbb \
 	python-sabyenc \
     python-pip \
+	python3 \
 	${SABNZBD} \
 	unrar \
 	unzip && \
+pip install --upgrade pip && \
 pip install --no-cache-dir \
 	apprise \
 	chardet \
@@ -52,27 +55,21 @@ pip install --no-cache-dir \
 	setuptools \
 	pynzbget \
 	six && \
- wget https://github.com/Yelp/dumb-init/releases/download/v1.2.2/dumb-init_1.2.2_amd64.deb && \
- dpkg -i dumb-init*.deb && \
- rm -rf dumb-init*.deb && \
- curl -L https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-linux-amd64-v0.6.1.tar.gz | tar -C /usr/local/bin -xzv && \
  echo "USER=root\nHOST=0.0.0.0\nPORT=8081\nCONFIG=/config/sabnzbd-home\n" > /etc/default/sabnzbdplus && \
  echo "**** cleanup ****" && \
  apt-get clean && \
  rm -rf \
 	/tmp/* \
 	/var/lib/apt/lists/* \
-	/var/tmp/* && \
- service sabnzbdplus start
+	/var/tmp/*
 
 # add local files
 COPY root/ /
 
 ADD openvpn/ /etc/openvpn/
 
-HEALTHCHECK --interval=5m CMD /etc/scripts/healthcheck.sh
+
+HEALTHCHECK --interval=5m CMD /scripts/healthcheck.sh
 
 # ports and volumes
-EXPOSE 8081 9090
-
-CMD ["dumb-init", "/etc/openvpn/start.sh"]
+EXPOSE 8081

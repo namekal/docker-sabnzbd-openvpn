@@ -1,0 +1,9 @@
+#!/usr/bin/with-contenv bash
+set -x
+
+#CONTROL_OPTS="--script-security 2 --up /etc/openvpn/tunnelUp.sh --down /etc/openvpn/tunnelDown.sh"
+
+exec \
+      s6-setuidgid abc /usr/sbin/openvpn \
+      ${CONTROL_OPTS} ${OPENVPN_OPTS} \
+      --config "${OPENVPN_CONFIG}"
