@@ -1,10 +1,10 @@
 FROM lsiobase/ubuntu:xenial
 
 # set version label
-ARG BUILD_DATE
-ARG VERSION
+#ARG BUILD_DATE
+#ARG VERSION
 ARG SABNZBD_VERSION
-LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
+LABEL build_version="Base-image info: Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
 LABEL maintainer="namekal"
 
 # environment settings
@@ -12,7 +12,7 @@ ARG DEBIAN_FRONTEND="noninteractive"
 ENV HOME="/config" \
 PYTHONIOENCODING=utf-8
 
-VOLUME /config /downloads /incomplete-downloads /data
+VOLUME /config /downloads
 
 RUN \
  echo "***** add sabnzbd repositories ****" && \
@@ -40,7 +40,7 @@ RUN \
 	p7zip-full \
 	par2-tbb \
 	python-sabyenc \
-    	python-pip \
+    python-pip \
 	python3 \
 	${SABNZBD} \
 	unrar \
@@ -55,9 +55,6 @@ pip install --no-cache-dir \
 	setuptools \
 	pynzbget \
 	six && \
- wget https://github.com/Yelp/dumb-init/releases/download/v1.2.2/dumb-init_1.2.2_amd64.deb && \
- dpkg -i dumb-init*.deb && \
- rm -rf dumb-init*.deb && \
  echo "USER=root\nHOST=0.0.0.0\nPORT=8081\nCONFIG=/config/sabnzbd-home\n" > /etc/default/sabnzbdplus && \
  echo "**** cleanup ****" && \
  apt-get clean && \
@@ -75,4 +72,4 @@ ADD openvpn/ /etc/openvpn/
 HEALTHCHECK --interval=5m CMD /scripts/healthcheck.sh
 
 # ports and volumes
-EXPOSE 8081 9090
+EXPOSE 8081
