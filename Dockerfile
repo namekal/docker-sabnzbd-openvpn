@@ -68,10 +68,10 @@ RUN \
  apt install -y \
 	python-sabyenc \
 	${SABNZBD} && \
+    par2-tbb \
     pip install --no-cache-dir \
 	pynzb \
 	sabyenc \
-    par2-tbb \
 	pynzbget && \
  echo "USER=root\nHOST=0.0.0.0\nPORT=8081\nCONFIG=/config/sabnzbd-home\n" > /etc/default/sabnzbdplus && \
  echo "**** cleanup ****" \
