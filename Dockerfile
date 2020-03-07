@@ -24,7 +24,6 @@ RUN apt update \
     jq \
 	wget \
 	p7zip-full \
-	par2-tbb \
     python-pip \
     python2.7 \
     python2.7-pysqlite2 \
@@ -65,12 +64,14 @@ RUN \
 	SABNZBD="sabnzbdplus=${SABNZBD_VERSION}"; \
  fi && \
  apt update && \
+ add-apt-repository ppa:jcfp/sab-addons && \
  apt install -y \
 	python-sabyenc \
 	${SABNZBD} && \
     pip install --no-cache-dir \
 	pynzb \
 	sabyenc \
+    par2-tbb \
 	pynzbget && \
  echo "USER=root\nHOST=0.0.0.0\nPORT=8081\nCONFIG=/config/sabnzbd-home\n" > /etc/default/sabnzbdplus && \
  echo "**** cleanup ****" \
