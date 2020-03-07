@@ -63,8 +63,8 @@ RUN \
  else \
 	SABNZBD="sabnzbdplus=${SABNZBD_VERSION}"; \
  fi && \
- apt update && \
  add-apt-repository ppa:jcfp/sab-addons && \
+ apt update && \
  apt install -y \
 	python-sabyenc \
 	${SABNZBD} && \
