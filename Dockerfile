@@ -122,16 +122,12 @@ RUN apt update \
 	    /tmp/* \
 	    /var/lib/apt/lists/* \
 	    /var/tmp/*
-
+COPY root/ /
 ADD openvpn/ /etc/openvpn/
 ADD transmission/ /etc/transmission/
 ADD tinyproxy /opt/tinyproxy/
-ADD scripts /etc/scripts/
 
-ENV OPENVPN_USERNAME=**None** \
-    OPENVPN_PASSWORD=**None** \
-    OPENVPN_PROVIDER=**None** \
-    GLOBAL_APPLY_PERMISSIONS=true 
+ENV GLOBAL_APPLY_PERMISSIONS=true 
 
 HEALTHCHECK --interval=5m CMD /scripts/healthcheck.sh
 
