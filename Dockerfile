@@ -67,8 +67,8 @@ RUN \
  apt update && \
  apt install -y \
 	python-sabyenc \
-	${SABNZBD} && \
-    par2-tbb \
+	${SABNZBD} \
+    par2-tbb && \
     pip install --no-cache-dir \
 	pynzb \
 	sabyenc \
