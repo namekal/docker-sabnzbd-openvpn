@@ -1,0 +1,42 @@
+#!/usr/bin/with-contenv bash
+
+dockerize -template /etc/transmission/environment-variables.tmpl:/etc/transmission/environment-variables.sh
+
+. /etc/transmission/environment-variables.sh
+
+
+
+# make folders
+mkdir -p \
+    /downloads
+	${TRANSMISSION_DOWNLOAD_DIR} \
+    ${TRANSMISSION_INCOMPLETE_DIR} \
+    ${TRANSMISSION_WATCH_DIR}
+
+# add transmission credentials from env vars
+echo "${TRANSMISSION_RPC_USERNAME}" > /config/transmission-credentials.txt
+echo "${TRANSMISSION_RPC_PASSWORD}" >> /config/transmission-credentials.txt
+
+# Persist transmission settings for use by transmission-daemon
+dockerize -template /etc/transmission/settings.tmpl:${TRANSMISSION_HOME}/settings.json
+
+# copy blocklist-update script
+[[ ! -f ${TRANSMISSION_HOME}/blocklist-update.sh ]] && cp \
+	/defaults/blocklist-update.sh ${TRANSMISSION_HOME}/blocklist-update.sh
+
+if [ ! -z "$USER" ] && [ ! -z "$PASS" ]; then
+	sed -i '/rpc-authentication-required/c\    "rpc-authentication-required": true,' ${TRANSMISSION_HOME}/settings.json
+	sed -i "/rpc-username/c\    \"rpc-username\": \"$USER\"," ${TRANSMISSION_HOME}/settings.json
+	sed -i "/rpc-password/c\    \"rpc-password\": \"$PASS\"," ${TRANSMISSION_HOME}/settings.json
+fi
+
+# permissions
+chown abc:abc \
+	${TRANSMISSION_HOME}/settings.json \
+	${TRANSMISSION_HOME}/blocklist-update.sh \
+	/downloads \
+	${TRANSMISSION_DOWNLOAD_DIR} \
+    ${TRANSMISSION_INCOMPLETE_DIR} \
+    ${TRANSMISSION_WATCH_DIR}
+
+chmod 755 /config/blocklist-update.sh

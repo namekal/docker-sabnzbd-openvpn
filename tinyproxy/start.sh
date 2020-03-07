@@ -3,8 +3,7 @@
 # Source our persisted env variables from container startup
 . /etc/transmission/environment-variables.sh
 
-find_proxy_conf()
-{
+find_proxy_conf() {
     if [[ -f /etc/tinyproxy.conf ]]; then
       PROXY_CONF='/etc/tinyproxy.conf'
     elif [[ -f /etc/tinyproxy/tinyproxy.conf ]]; then
@@ -15,8 +14,7 @@ find_proxy_conf()
     fi
 }
 
-set_port()
-{
+set_port() {
   expr $1 + 0 1>/dev/null 2>&1
   status=$?
   if test ${status} -gt 1
