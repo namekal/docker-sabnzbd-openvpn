@@ -22,6 +22,7 @@ RUN apt update \
     iputils-ping \
 	net-tools \
     jq \
+    git \
 	wget \
 	p7zip-full \
     python-pip \
