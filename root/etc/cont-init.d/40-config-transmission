@@ -8,10 +8,12 @@ dockerize -template /etc/transmission/environment-variables.tmpl:/etc/transmissi
 
 # make folders
 mkdir -p \
-    /downloads
 	${TRANSMISSION_DOWNLOAD_DIR} \
     ${TRANSMISSION_INCOMPLETE_DIR} \
-    ${TRANSMISSION_WATCH_DIR}
+    ${TRANSMISSION_WATCH_DIR} \
+	/watch \
+    /downloads \
+	/downloads/incomplete 
 
 # add transmission credentials from env vars
 echo "${TRANSMISSION_RPC_USERNAME}" > /config/transmission-credentials.txt
@@ -34,9 +36,10 @@ fi
 chown abc:abc \
 	${TRANSMISSION_HOME}/settings.json \
 	${TRANSMISSION_HOME}/blocklist-update.sh \
-	/downloads \
 	${TRANSMISSION_DOWNLOAD_DIR} \
     ${TRANSMISSION_INCOMPLETE_DIR} \
-    ${TRANSMISSION_WATCH_DIR}
+    ${TRANSMISSION_WATCH_DIR} \
+	/downloads \
+	/watch
 
 chmod 755 /config/blocklist-update.sh
