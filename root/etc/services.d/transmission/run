@@ -10,7 +10,24 @@ _term() {
 }
 
         trap _term SIGTERM
-	
+        
+. /etc/transmission/environment-variables.sh
+
+if [[ "combustion" = "$TRANSMISSION_WEB_UI" ]]; then
+  echo "Using Combustion UI, overriding TRANSMISSION_WEB_HOME"
+  export TRANSMISSION_WEB_HOME=/opt/transmission-ui/combustion-release
+fi
+
+if [[ "kettu" = "$TRANSMISSION_WEB_UI" ]]; then
+  echo "Using Kettu UI, overriding TRANSMISSION_WEB_HOME"
+  export TRANSMISSION_WEB_HOME=/opt/transmission-ui/kettu
+fi
+
+if [[ "transmission-web-control" = "$TRANSMISSION_WEB_UI" ]]; then
+  echo "Using Transmission Web Control  UI, overriding TRANSMISSION_WEB_HOME"
+  export TRANSMISSION_WEB_HOME=/opt/transmission-ui/transmission-web-control
+fi
+
 	s6-setuidgid abc /usr/bin/transmission-daemon \
 	-g /config/transmission -f &
 
