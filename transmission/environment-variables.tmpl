@@ -71,14 +71,14 @@ export TRANSMISSION_UPLOAD_SLOTS_PER_TORRENT={{ default .Env.TRANSMISSION_UPLOAD
 export TRANSMISSION_UTP_ENABLED={{ default .Env.TRANSMISSION_UTP_ENABLED "false" }}
 export TRANSMISSION_WATCH_DIR={{ default .Env.TRANSMISSION_WATCH_DIR "/watch" }}
 export TRANSMISSION_WATCH_DIR_ENABLED={{ default .Env.TRANSMISSION_WATCH_DIR_ENABLED "true" }}
-export TRANSMISSION_WATCH_DIR_FORCE_GENERIC={{ default .Env.TRANSMISSION_WATCH_DIR_FORCE_GENERIC "" }}
+export TRANSMISSION_WATCH_DIR_FORCE_GENERIC={{ default .Env.TRANSMISSION_WATCH_DIR_FORCE_GENERIC "\"\"" }}
 
 # Transmission needs to know which VPN provider is used
 export OPENVPN_PROVIDER={{ default .Env.OPENVPN_PROVIDER "**None**" }}
 
 
 export ENABLE_UFW={{ default .Env.ENABLE_UFW "false" }}
-export TRANSMISSION_WEB_UI={{ default .Env.TRANSMISSION_WEB_UI "" }}
+export TRANSMISSION_WEB_UI={{ default .Env.TRANSMISSION_WEB_UI "\"\"" }}
 
 export PUID={{ .Env.PUID }}
 export PGID={{ .Env.PGID }}
