@@ -55,4 +55,4 @@ chown abc:abc \
 	/downloads \
 	/watch
 
-chmod 755 /config/blocklist-update.sh
+chmod 755 ${TRANSMISSION_HOME}/blocklist-update.sh
