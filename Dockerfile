@@ -132,4 +132,4 @@ ENV GLOBAL_APPLY_PERMISSIONS=true
 HEALTHCHECK --interval=5m CMD /scripts/healthcheck.sh
 
 # Expose port and run
-EXPOSE 9091 51413 8888
+EXPOSE 8081 9091 51413 8888
