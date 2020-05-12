@@ -1,5 +1,4 @@
 #!/usr/bin/with-contenv bash
-set -x
 
 if [ ! -f "/config/openvpn-config" ]; then
       echo "File \"/config/openvpn-config\" not found. Check/provide env vars for openvpn provider info."
