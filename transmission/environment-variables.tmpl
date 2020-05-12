@@ -80,8 +80,8 @@ export OPENVPN_PROVIDER={{ default .Env.OPENVPN_PROVIDER "**None**" }}
 export ENABLE_UFW={{ default .Env.ENABLE_UFW "false" }}
 export TRANSMISSION_WEB_UI={{ default .Env.TRANSMISSION_WEB_UI "" }}
 
-export PUID={{ .Env.PUID }}
-export PGID={{ .Env.PGID }}
+export PUID={{ default .Env.PUID "911" }}
+export PGID={{ default .Env.PGID "911" }}
 
 # Need to pass through our tinyproxy settings
 export WEBPROXY_ENABLED={{ default .Env.WEBPROXY_ENABLED "false" }}
